@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar } from "recharts";
 
 // ─── DESIGN TOKENS ────────────────────────────────────────────────────────────
@@ -391,6 +391,14 @@ export default function App() {
   const [rateType, setRateType] = useState("fixed"); // fixed | variable | adjustable
   const [manualRate, setManualRate] = useState(3.77);
   const [scenarioCompare, setScenarioCompare] = useState(false);
+
+  useEffect(() => {
+    const p = new URLSearchParams(window.location.search);
+    if (p.get("purchasePrice")) setPurchasePrice(Number(p.get("purchasePrice")));
+    if (p.get("propertyType")) setPropertyType(p.get("propertyType"));
+    if (p.get("energyClass")) setEnergyClass(p.get("energyClass"));
+    if (p.get("isNew")) setIsNew(p.get("isNew") === "true");
+  }, []);
 
   const tabs = ["Profile & Property", "Financing", "Benefits", "Results & Charts"];
 
